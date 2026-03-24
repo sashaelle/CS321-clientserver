@@ -1,7 +1,8 @@
 # CS321-clientserver
 
 
-Client
+##Client
+
 -Accepts cards from server
 
 -Asks user to hit or hold
@@ -15,7 +16,7 @@ Client
     -Recieves winner from client and displays to user
 
 
-Server
+##Server
 
 -Sends card(s) to client
 
@@ -24,6 +25,6 @@ Server
 -Returns winner to client with point totals
 
 
-Library
+##Library
 
 -Calculates the value of a hand
