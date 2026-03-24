@@ -1,5 +1,6 @@
 # CS321-clientserver
 
+Port Number: 1706
 
 ##Client
 
