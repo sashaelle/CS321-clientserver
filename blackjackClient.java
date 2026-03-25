@@ -1,7 +1,40 @@
+import java.net.Socket;
+import java.io.InputStream;
+/*To do:
+    * comment
+    * Accept tcp connection from port 1706
+    * Print out hello when accepting socket
+    * Close socket
+    * print bye when closing socket
+*/
 
+/**
+ * @author Joy Janney
+ * Course:
+ * Professor:
+ * Date Created: 3/25/26
+ * Description: 
+ */
 
 public class blackjackClient{
-  public void main{
-    system.out.println("Hello World");
-  }
+    final public static int PORT = 1706;
+    final public static String IP = "localhost";
+    public static void main(String[] args) throws Exception
+    {
+        Socket s = new Socket(IP, PORT);
+        /*InputStream in = s.getInputStream();
+        byte [] buf = new byte[1024];
+        int n = in.read(buf);
+        System.out.println(new String(buf, 0, n));*/
+        System.out.println("Socket Created");
+        System.out.println("Closing socket connection in 10 seconds...");
+
+        //https://medium.com/@AlexanderObregon/building-a-countdown-timer-in-java-using-loops-for-beginners-67db5d461c18
+        for(int i = 9; i > 0; i --){
+            System.out.println(i + "...");
+            Thread.sleep(1000);
+        }
+        s.close();
+        System.out.println("Socket Closed");
+    }
 }
