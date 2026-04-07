@@ -1,6 +1,7 @@
 import java.io.DataOutputStream;
 import java.io.InputStream;
 import java.net.*;
+import java.lang.String;
 
 /*To do:
     * comment
@@ -20,16 +21,17 @@ import java.io.OutputStream;
  */
 
 public class blackjackClient{
-    final public static int PORT = 1706;
-    final public static String IP = "localhost";
     public static void main(String[] args) throws Exception
     {
-        Socket s = new Socket(IP, PORT);
+        int Port = Integer.parseInt(args[1]);
+        String IP = args[0];
+        Socket s = new Socket(IP, Port);
         /*InputStream in = s.getInputStream();
         byte [] buf = new byte[1024];
         int n = in.read(buf);
         System.out.println(new String(buf, 0, n));*/
-        System.out.println("Socket Created");
+
+        System.out.println("Connected opened to " + IP + " at port " + Port);
 
 
 
@@ -43,6 +45,6 @@ public class blackjackClient{
         DataOutputStream socketOutput = new DataOutputStream(s.getOutputStream());
         socketOutput.writeUTF("Goodbye");
         s.close();
-        System.out.println("Socket Closed");
+        System.out.println("Connected closed to " + IP + " at port " + Port);
     }
 }
