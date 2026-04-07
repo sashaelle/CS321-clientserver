@@ -30,8 +30,10 @@ import java.util.HashMap;
 
 
 public class blackjackClient{
+   //details for the socket connection if static (no command line arguments)
     final public static int PORT = 1706;
     final public static String IP = "localhost";
+   
     public static void main(String[] args) throws Exception
     {
         int Port = Integer.parseInt(args[1]);
