@@ -35,46 +35,51 @@ public class blackjackServer {
         } // end finally
     }
 
-        /*********************************************************
-        * A handler thread class to work with a single client.
-        *********************************************************/
+    /*********************************************************
+    * A handler thread class to work with a single client.
+    *********************************************************/
     private static class Handler extends Thread {
-        private Socket socket;   // socket to use to connect to clients
-        private PrintWriter out;
-        private BufferedReader in;
-        private String inputLine, outputLine;
+    private Socket socket;   // socket to use to connect to clients
+    private PrintWriter out;
+    private BufferedReader in;
+    private String inputLine, outputLine;
 
-        // Construct a handler thread
-        public Handler(Socket socket) {
-            this.socket = socket;
-        }  // end Handler
+    // Construct a handler thread
+    public Handler(Socket socket) {
+        this.socket = socket;
+    }  // end Handler
 
-        // do the thread processing
-        public void run() {
-            try {
-                out = new PrintWriter(socket.getOutputStream(), true);
-                in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+    // do the thread processing
+    public void run() {
+        try {
+            out = new PrintWriter(socket.getOutputStream(), true);
+            in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 
-                // Send greeting when client connects
-                out.println("Hello!");
-                System.out.println("Hello from Server!");
+            /*
+            // Send greeting when client connects
+            out.println("Hello!");
+            System.out.println("Hello from Server!");
+            */
 
-                // Keep connection alive
-                while ((inputLine = in.readLine()) != null) {
-                    System.out.println("Client says: " + inputLine);
-                    out.println("Received: " + inputLine);
+            inputLine = in.readLine();
+            
+            // Keep connection alive
+            while (inputLine != null) {
+                System.out.println("Client says: " + inputLine);
+                out.println("Received: " + inputLine);
+                inputLine = in.readLine();
+            }
+
+        } catch (IOException e) {
+            System.out.println(e);
+        } finally {
+                try {
+                    socket.close();
+                    System.out.println("Goodbye!");
+                } catch (IOException e) {
+                    System.out.println(e);  
                 }
-
-            } catch (IOException e) {
-                System.out.println(e);
-            } finally {
-                    try {
-                        socket.close();
-                        System.out.println("Goodbye!");
-                    } catch (IOException e) {
-                        System.out.println(e);  
-                    }
-                } // end finally
-            } // end function run
-        }  // end class Handler
-    } 
+            } // end finally
+        } // end function run
+    }  // end class Handler
+}
