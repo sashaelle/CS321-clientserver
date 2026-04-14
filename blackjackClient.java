@@ -70,17 +70,21 @@ public class blackjackClient{
 
             //hand for the game
             ArrayList<char[]> hand = new ArrayList<char[]>();
+            System.out.println("Waiting on intial 2 cards from server");
+            //do NOT move out, need new memory address
+            char[] initialCard1 = input.next().toCharArray();
+            //add card to hand
+            hand.add(initialCard1);
+            //do NOT move out, need new memory address
+            char[] initialCard2 = input.next().toCharArray();
+            //add card to hand
+            hand.add(initialCard2);
+
             //whether to hit or hold
             boolean hit = true;
-
             //continue while they want to hit
             //TO DO: compare to score
             while(hit == true){
-                //do NOT move out, need new memory address
-                char[] newCard = input.next().toCharArray();
-
-                //add card to hand
-                hand.add(newCard);
 
                 //print out user hand
                 for(char[] card : hand){
@@ -97,6 +101,11 @@ public class blackjackClient{
                         socketOut.write(1);
                         hit = true;
                         validInput = true;
+                         //do NOT move out, need new memory address
+                         System.out.println("Waiting on new card from server");
+                        char[] newCard = input.next().toCharArray();
+                        //add card to hand
+                        hand.add(newCard);
                     }
                     else if (option == 2){
                         socketOut.write(0);
