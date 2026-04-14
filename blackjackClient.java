@@ -28,6 +28,8 @@ import java.util.Random;
 import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.HashMap;
+import java.io.DataOutputStream;
+import java.io.DataInputStream;
 
 
 public class blackjackClient{
@@ -47,36 +49,34 @@ public class blackjackClient{
         String IP = args[0];
         Socket s = new Socket(IP, Port);
         System.out.println("Connected opened to " + IP + " at port " + Port);
-        OutputStream socketOut = s.getOutputStream();
-        Scanner input = new Scanner(s.getInputStream());
-
-        /*InputStream in = s.getInputStream();
-        byte [] buf = new byte[1024];
-        int n = in.read(buf);
-        System.out.println(new String(buf, 0, n));*/
+        DataOutputStream output = new DataOutputStream(s.getOutputStream());
+        DataInputStream input = new DataInputStream(s.getInputStream());
 
         Random r = new Random();
         Scanner std_in = new Scanner(System.in);
 
-        int rand;//will be deleted once server and library is implements
         int option;//user option input
         boolean continueGame = true;//whether to start a new game or not
         createHashMaps();
 
         System.out.println("Welcome to Blackjack");
         while(continueGame){
-            //add in beginner card
-            //add in the dealer hand as well
+            //asking server to deal a new hand
+            output.writeChars("Deal");
 
             //hand for the game
             ArrayList<char[]> hand = new ArrayList<char[]>();
             System.out.println("Waiting on intial 2 cards from server");
             //do NOT move out, need new memory address
-            char[] initialCard1 = input.next().toCharArray();
+            char[] initialCard1 = {'X', 'X'};
+            initialCard1[0] = input.readChar();
+            initialCard1[1] = input.readChar();
             //add card to hand
             hand.add(initialCard1);
             //do NOT move out, need new memory address
-            char[] initialCard2 = input.next().toCharArray();
+            char[] initialCard2 = {'X', 'X'};
+            initialCard2[0] = input.readChar();
+            initialCard2[1] = input.readChar();
             //add card to hand
             hand.add(initialCard2);
 
@@ -98,17 +98,19 @@ public class blackjackClient{
                     System.out.println("(1) Hit\n(2) Hold");
                     option = std_in.nextInt();
                     if (option == 1){
-                        socketOut.write(1);
+                        output.write(1);
                         hit = true;
                         validInput = true;
                          //do NOT move out, need new memory address
                          System.out.println("Waiting on new card from server");
-                        char[] newCard = input.next().toCharArray();
+                        char[] newCard = {'X', 'X'};
+                        newCard[0] = input.readChar();
+                        newCard[1] = input.readChar();
                         //add card to hand
                         hand.add(newCard);
                     }
                     else if (option == 2){
-                        socketOut.write(0);
+                        output.write(0);
                         hit = false;
                         validInput = true;
                     }
@@ -140,13 +142,13 @@ public class blackjackClient{
                 if (option == 1){
                     continueGame = true;
                     validInput = true;
-                    socketOut.write(1);
+                    output.writeChars("Deal");
                     
                 }
                 else if (option == 2){
                     continueGame = false;
                     validInput = true;
-                    socketOut.write(0);
+                    output.writeChars("Exit");
                 }
                 else{
                     System.out.println("Invalid Choice.");
@@ -159,7 +161,7 @@ public class blackjackClient{
         socketOutput.writeUTF("Goodbye");
         s.close();
         std_in.close();
-        socketOut.close();
+        output.close();
         input.close();
         System.out.println("Connected closed to " + IP + " at port " + Port);
     }
