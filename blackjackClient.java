@@ -15,7 +15,6 @@
     * accept input from the server
     * comment
     * use score function
-    * send 1 for hit and 0 for hold to server
     * add in initial 2 card
     * add in dealer hand
  */
@@ -49,6 +48,7 @@ public class blackjackClient{
         Socket s = new Socket(IP, Port);
         System.out.println("Connected opened to " + IP + " at port " + Port);
         OutputStream socketOut = s.getOutputStream();
+        Scanner input = new Scanner(s.getInputStream());
 
         /*InputStream in = s.getInputStream();
         byte [] buf = new byte[1024];
@@ -77,35 +77,7 @@ public class blackjackClient{
             //TO DO: compare to score
             while(hit == true){
                 //do NOT move out, need new memory address
-                char[] newCard = {'X','X'};
-                //TO DO: change to accept from server
-                rand = r.nextInt(4);
-                if (rand == 0)
-                    newCard[0] = 'H';
-                else if (rand == 1)
-                    newCard[0] = 'D';
-                else if (rand == 2)
-                    newCard[0] = 'C';
-                else
-                    newCard[0] = 'S';
-                
-                rand = r.nextInt(13);
-                if ((rand >= 2) & (rand < 10)){
-                    char c = Integer.toString(rand).charAt(0);
-                    newCard[1] = c;
-                }
-                else if (rand == 0){
-                    newCard[1] = 'A';
-                }
-                else if (rand == 1){
-                    newCard[1] = 'K';
-                }
-                else if (rand == 11){
-                    newCard[1] = 'Q';
-                }
-                else{
-                    newCard[1] = 'J';
-                }
+                char[] newCard = input.next().toCharArray();
 
                 //add card to hand
                 hand.add(newCard);
@@ -122,10 +94,12 @@ public class blackjackClient{
                     System.out.println("(1) Hit\n(2) Hold");
                     option = std_in.nextInt();
                     if (option == 1){
+                        socketOut.write(1);
                         hit = true;
                         validInput = true;
                     }
                     else if (option == 2){
+                        socketOut.write(0);
                         hit = false;
                         validInput = true;
                     }
@@ -177,6 +151,7 @@ public class blackjackClient{
         s.close();
         std_in.close();
         socketOut.close();
+        input.close();
         System.out.println("Connected closed to " + IP + " at port " + Port);
     }
     public static HashMap<Character, String> numberNames = new HashMap<>();
