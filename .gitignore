@@ -1,2 +1,5 @@
 # Ignore compiled Java class files
 *.class
+
+# Ignore local run file
+.vscode
