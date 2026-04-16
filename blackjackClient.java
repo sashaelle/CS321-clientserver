@@ -180,8 +180,8 @@ public class blackjackClient{
     }
     //this is translating the protocol names of the cards to the common human names
     public static String cardTranslator(char[] cardName){
-        char suite = cardName[0];
-        char number = cardName[1];
+        char suite = cardName[1];
+        char number = cardName[0];
 
         String nameSuite = suiteNames.get(suite);
         String nameNumber = numberNames.get(number);
@@ -191,10 +191,21 @@ public class blackjackClient{
     }
 
     public static void addCard(ArrayList<char[]> hand, InputStreamReader input) throws Exception{
-            char[] card = {'x','x','x','x'};
-            input.read(card);
+            char[] inputCard = {'x','x','x','x', 'x','x','x','x', 'x','x','x','x', 'x','x','x','x', 'x','x','x','x',
+                'x','x','x','x', 'x','x','x','x', 'x','x','x','x', 'x','x','x','x', 'x','x','x','x'
+            };
+            input.read(inputCard);
+
+            String stringCard = new String(inputCard);
+            int index = stringCard.indexOf(',');
+            if(index <= 0){
+                System.out.println("ERROR: " + stringCard);
+                return;
+            }
+
             //add card to hand
-            System.out.println("New card: " + card[0] + card[1] + card[2] + card[3]);
+            char[] card = {inputCard[index-1], inputCard[index+2]};
+            System.out.println("Card: " + new String(card) + "\nIndex of: " + index);
             hand.add(card);
     }
 }
