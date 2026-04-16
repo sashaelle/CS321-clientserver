@@ -62,10 +62,26 @@ public class blackjackServer {
             */
 
             inputLine = in.readLine();
+            System.out.println(inputLine);
             
             // Keep connection alive
             while (inputLine != null) {
                 System.out.println("Client says: " + inputLine);
+                if (inputLine.equalsIgnoreCase("Deal")) {
+                    out.println("Dealing hand...");
+                    out.println("7, H"); out.println("5, D");
+                } else if (inputLine.equalsIgnoreCase("Hit")) {
+                    out.println("Hitting...");
+                    out.println("3, H");
+                } else if (inputLine.equalsIgnoreCase("Hold")) {
+                    out.println("Holding...");
+                } else if (inputLine.equalsIgnoreCase("Exit")) {
+                    out.println("Goodbye!");
+                    break;
+                } else {
+                    out.println("Unknown command: " + inputLine);
+                }
+
                 out.println("Received: " + inputLine);
                 inputLine = in.readLine();
             }
