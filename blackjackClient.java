@@ -20,16 +20,14 @@
  */
 
 import java.io.DataOutputStream;
-import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.net.*;
 import java.lang.String;
-import java.io.OutputStream;
+import java.io.OutputStreamWriter;
 import java.util.Random;
 import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.HashMap;
-import java.io.DataOutputStream;
-import java.io.DataInputStream;
 
 
 public class blackjackClient{
@@ -49,8 +47,8 @@ public class blackjackClient{
         String IP = args[0];
         Socket s = new Socket(IP, Port);
         System.out.println("Connected opened to " + IP + " at port " + Port);
-        DataOutputStream output = new DataOutputStream(s.getOutputStream());
-        DataInputStream input = new DataInputStream(s.getInputStream());
+        OutputStreamWriter output = new OutputStreamWriter(s.getOutputStream(), "UTF8");
+        InputStreamReader input = new InputStreamReader(s.getInputStream(), "UTF8");
 
         Random r = new Random();
         Scanner std_in = new Scanner(System.in);
@@ -62,23 +60,16 @@ public class blackjackClient{
         System.out.println("Welcome to Blackjack");
         while(continueGame){
             //asking server to deal a new hand
-            output.writeChars("Deal");
+            output.write("Deal\n", 0, 5);
+            output.flush();
 
             //hand for the game
             ArrayList<char[]> hand = new ArrayList<char[]>();
             System.out.println("Waiting on intial 2 cards from server");
             //do NOT move out, need new memory address
-            char[] initialCard1 = {'X', 'X'};
-            initialCard1[0] = input.readChar();
-            initialCard1[1] = input.readChar();
-            //add card to hand
-            hand.add(initialCard1);
+
             //do NOT move out, need new memory address
-            char[] initialCard2 = {'X', 'X'};
-            initialCard2[0] = input.readChar();
-            initialCard2[1] = input.readChar();
-            //add card to hand
-            hand.add(initialCard2);
+            addCard(hand, input);
 
             //whether to hit or hold
             boolean hit = true;
@@ -98,19 +89,17 @@ public class blackjackClient{
                     System.out.println("(1) Hit\n(2) Hold");
                     option = std_in.nextInt();
                     if (option == 1){
-                        output.write(1);
+                        output.write("1\n", 0, 2);
+                        output.flush();
                         hit = true;
                         validInput = true;
                          //do NOT move out, need new memory address
-                         System.out.println("Waiting on new card from server");
-                        char[] newCard = {'X', 'X'};
-                        newCard[0] = input.readChar();
-                        newCard[1] = input.readChar();
-                        //add card to hand
-                        hand.add(newCard);
+                        System.out.println("Waiting on new card from server");
+                        addCard(hand, input);
                     }
                     else if (option == 2){
-                        output.write(0);
+                        output.write("0\n", 0, 2);
+                        output.flush();
                         hit = false;
                         validInput = true;
                     }
@@ -142,13 +131,14 @@ public class blackjackClient{
                 if (option == 1){
                     continueGame = true;
                     validInput = true;
-                    output.writeChars("Deal");
+                    //output.print("Deal");
                     
                 }
                 else if (option == 2){
                     continueGame = false;
                     validInput = true;
-                    output.writeChars("Exit");
+                    output.write("Exit", 0, 4);
+                    output.flush();
                 }
                 else{
                     System.out.println("Invalid Choice.");
@@ -198,5 +188,12 @@ public class blackjackClient{
 
 
         return nameNumber + " of " + nameSuite;
+    }
+
+    public static void addCard(ArrayList<char[]> hand, InputStreamReader input) throws Exception{
+            char[] card = {'X', 'X'};
+            input.read(card);
+            //add card to hand
+            hand.add(card);
     }
 }
