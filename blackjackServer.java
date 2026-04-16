@@ -82,7 +82,7 @@ public class blackjackServer {
 
                     // Dealer's initial hand
                     curr = randomNum; // get another random card for dealer 
-                    out.print(cards.get(curr)); cards.remove(curr); // remove the card from the deck
+                    out.println(cards.get(curr)); cards.remove(curr); // remove the card from the deck
                 } else if (inputLine.equalsIgnoreCase("Hit")) {
                     out.println("3, H");
                 } else if (inputLine.equalsIgnoreCase("Hold")) {
