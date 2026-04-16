@@ -73,8 +73,8 @@ public class blackjackServer {
                 System.out.println("Client says: " + inputLine);
 
                 if (inputLine.equalsIgnoreCase("Deal")) {
-                    out.println("7, H"); out.println("5, D");
-                    out.print("dealer has hearts 8");
+                    out.println(cards.get(randomNum)); out.println(cards.get(randomNum));
+                    out.print("8, S");
                 } else if (inputLine.equalsIgnoreCase("Hit")) {
                     out.println("3, H");
                 } else if (inputLine.equalsIgnoreCase("Hold")) {
