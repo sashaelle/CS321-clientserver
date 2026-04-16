@@ -65,8 +65,11 @@ public class blackjackServer {
             inputLine = in.readLine();
             System.out.println(inputLine);
             
+            int randomNum = 0 + (int)(Math.random() * ((51 - 0) + 1));
+
             // Keep connection alive
             while (inputLine != null) {
+                setCards(); // initialize the deck of cards
                 System.out.println("Client says: " + inputLine);
 
                 if (inputLine.equalsIgnoreCase("Deal")) {
@@ -96,5 +99,22 @@ public class blackjackServer {
                 }
             } // end finally
         } // end function run
+
+        public static HashMap<Integer, String> cards = new HashMap<>();
+        private static String[] suits = {"H", "D", "C", "S"};
+        private static String[] numbers = {"2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K", "A"};
+
+        public static void setCards(){
+            int id = 0;
+            for (String suit : suits) {
+                for (String number : numbers) {
+                    cards.put(id, number+", "+suit);
+                    id++;
+                }
+            }
+
+            System.out.println(cards);
+        }
+
     }  // end class Handler
 }
