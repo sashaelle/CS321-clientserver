@@ -73,8 +73,16 @@ public class blackjackServer {
                 System.out.println("Client says: " + inputLine);
 
                 if (inputLine.equalsIgnoreCase("Deal")) {
-                    out.println(cards.get(randomNum)); out.println(cards.get(randomNum));
-                    out.print("8, S");
+                    // Player's initial hand
+                    int curr = randomNum;
+                    out.println(cards.get(curr)); cards.remove(curr); // remove the card from the deck
+        
+                    curr = randomNum; // get another random card
+                    out.println(cards.get(curr)); cards.remove(curr); // remove the card from the deck
+
+                    // Dealer's initial hand
+                    curr = randomNum; // get another random card for dealer 
+                    out.print(cards.get(curr)); cards.remove(curr); // remove the card from the deck
                 } else if (inputLine.equalsIgnoreCase("Hit")) {
                     out.println("3, H");
                 } else if (inputLine.equalsIgnoreCase("Hold")) {
