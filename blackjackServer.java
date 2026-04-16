@@ -12,7 +12,7 @@
 
 import java.io.*;
 import java.net.*;  
-//import java.util.ArrayList;
+import java.util.*; 
 
 public class blackjackServer {
     public static final int PORT = 1706; // Server will listen on this port
@@ -44,7 +44,6 @@ public class blackjackServer {
     private PrintWriter out;
     private BufferedReader in;
     private String inputLine, outputLine;
-    //private ArrayList<String> deck = new ArrayList<String>();
 
     // Construct a handler thread
     public Handler(Socket socket) {
@@ -69,11 +68,14 @@ public class blackjackServer {
             // Keep connection alive
             while (inputLine != null) {
                 System.out.println("Client says: " + inputLine);
+
                 if (inputLine.equalsIgnoreCase("Deal")) {
                     out.println("7, H"); out.println("5, D");
+                    out.print("dealer has hearts 8");
                 } else if (inputLine.equalsIgnoreCase("Hit")) {
                     out.println("3, H");
                 } else if (inputLine.equalsIgnoreCase("Hold")) {
+                    out.println("Player holds. Dealer's turn.");
                 } else if (inputLine.equalsIgnoreCase("Exit")) {
                     out.println("Goodbye!");
                     break;
