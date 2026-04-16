@@ -89,7 +89,7 @@ public class blackjackClient{
                     System.out.println("(1) Hit\n(2) Hold");
                     option = std_in.nextInt();
                     if (option == 1){
-                        output.write("1\n", 0, 2);
+                        output.write("Hit\n", 0, 4);
                         output.flush();
                         hit = true;
                         validInput = true;
@@ -98,7 +98,7 @@ public class blackjackClient{
                         addCard(hand, input);
                     }
                     else if (option == 2){
-                        output.write("0\n", 0, 2);
+                        output.write("Hold\n", 0, 5);
                         output.flush();
                         hit = false;
                         validInput = true;
@@ -191,9 +191,10 @@ public class blackjackClient{
     }
 
     public static void addCard(ArrayList<char[]> hand, InputStreamReader input) throws Exception{
-            char[] card = {'X', 'X'};
+            char[] card = {'x','x','x','x'};
             input.read(card);
             //add card to hand
+            System.out.println("New card: " + card[0] + card[1] + card[2] + card[3]);
             hand.add(card);
     }
 }
