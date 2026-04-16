@@ -108,6 +108,7 @@ public class blackjackServer {
             } // end finally
         } // end function run
 
+        // HashMap to represent the deck of cards
         public static HashMap<Integer, String> cards = new HashMap<>();
         private static String[] suits = {"H", "D", "C", "S"};
         private static String[] numbers = {"2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K", "A"};
@@ -120,9 +121,7 @@ public class blackjackServer {
                     id++;
                 }
             }
-
-            System.out.println(cards);
-        }
+        } // end function setCards
 
     }  // end class Handler
 }
