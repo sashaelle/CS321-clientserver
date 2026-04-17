@@ -65,7 +65,7 @@ public class blackjackServer {
             inputLine = in.readLine();
             System.out.println(inputLine);
             
-            int randomNum = 0 + (int)(Math.random() * ((51 - 0) + 1));
+            //int randomNum = 
 
             // Keep connection alive
             while (inputLine != null) {
@@ -74,14 +74,14 @@ public class blackjackServer {
 
                 if (inputLine.equalsIgnoreCase("Deal")) {
                     // Player's initial hand
-                    int curr = randomNum;
+                    int curr = 0 + (int)(Math.random() * ((51 - 0) + 1));;
                     out.println(cards.get(curr)); cards.remove(curr); // remove the card from the deck
         
-                    curr = randomNum; // get another random card
+                    curr = 0 + (int)(Math.random() * ((51 - 0) + 1)); // get another random card
                     out.println(cards.get(curr)); cards.remove(curr); // remove the card from the deck
 
                     // Dealer's initial hand
-                    curr = randomNum; // get another random card for dealer 
+                    curr = 0 + (int)(Math.random() * ((51 - 0) + 1)); // get another random card for dealer 
                     out.println(cards.get(curr)); cards.remove(curr); // remove the card from the deck
                 } else if (inputLine.equalsIgnoreCase("Hit")) {
                     out.println("3, H");
