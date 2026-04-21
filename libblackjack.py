@@ -1,5 +1,3 @@
-hand = "A,A,A,A,10"
-
 def score(hand):
     scores = {
         '2': 2,
@@ -31,5 +29,3 @@ def score(hand):
     score += num_aces_1 + num_aces_11*11
 
     return score
-
-print(score(hand))
