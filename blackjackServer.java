@@ -86,8 +86,7 @@ public class blackjackServer {
                 } else if (inputLine.equalsIgnoreCase("Hit")) {
                     out.println("3, H");
                 } else if (inputLine.equalsIgnoreCase("Hold")) {
-                    out.println("Player holds. Dealer's turn.");
-                } else if (inputLine.equalsIgnoreCase("Exit")) {
+                } else if (inputLine.equalsIgnoreCase("ExitGoodbye")) {
                     out.println("Goodbye!");
                     break;
                 } else {
