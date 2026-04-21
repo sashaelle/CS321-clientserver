@@ -169,9 +169,6 @@ public class blackjackClient{
                 }
             }
         }   
-        //https://www.geeksforgeeks.org/java/socket-programming-in-java/
-        DataOutputStream socketOutput = new DataOutputStream(s.getOutputStream());
-        socketOutput.writeUTF("Goodbye");
         s.close();
         std_in.close();
         output.close();
