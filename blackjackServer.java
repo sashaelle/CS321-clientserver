@@ -69,22 +69,35 @@ public class blackjackServer {
 
             // Keep connection alive
             while (inputLine != null) {
-                setCards(); // initialize the deck of cards
                 System.out.println("Client says: " + inputLine);
 
                 if (inputLine.equalsIgnoreCase("Deal")) {
+                    setCards(); // initialize the deck of cards
                     // Player's initial hand
-                    int curr = 0 + (int)(Math.random() * ((51 - 0) + 1));;
-                    out.println(cards.get(curr)); cards.remove(curr); // remove the card from the deck
-        
-                    curr = 0 + (int)(Math.random() * ((51 - 0) + 1)); // get another random card
-                    out.println(cards.get(curr)); cards.remove(curr); // remove the card from the deck
+                    int first = getRandomNum(); // get a random card
+                    out.println(cards.get(first)); 
+                    System.out.println("Player's initial hand: " + cards.get(first));
+                    cards.remove(first); // remove the card from the deck
+
+                    int second = getRandomNum(); // get another random card
+                    out.println(cards.get(second)); 
+                    System.out.println("Player's initial hand: " + cards.get(second));
+                    cards.remove(second); // remove the card from the deck
 
                     // Dealer's initial hand
-                    curr = 0 + (int)(Math.random() * ((51 - 0) + 1)); // get another random card for dealer 
-                    out.println(cards.get(curr)); cards.remove(curr); // remove the card from the deck
+                    int dealer = getRandomNum(); // get another random card for dealer 
+                    out.println(cards.get(dealer)); 
+                    System.out.println("Dealer's initial hand: " + cards.get(dealer));
+                    cards.remove(dealer); // remove the card from the deck
+
+                    System.out.println("Deck size after dealing: " + cards.size());
                 } else if (inputLine.equalsIgnoreCase("Hit")) {
-                    out.println("3, H");
+                    int curr = getRandomNum(); // get a random card
+                    out.println(cards.get(curr)); 
+                    System.out.println("Player's hit: " + cards.get(curr));
+                    cards.remove(curr); // remove the card from the deck
+
+                    System.out.println("Deck size after hit: " + cards.size());
                 } else if (inputLine.equalsIgnoreCase("Hold")) {
                 } else if (inputLine.equalsIgnoreCase("Exit")) {
                     out.println("Goodbye!");
@@ -122,5 +135,8 @@ public class blackjackServer {
             }
         } // end function setCards
 
+        int getRandomNum(){
+            return (int)(Math.random() * (cards.size() + 1));
+        } // end function getRandomNum
     }  // end class Handler
 }
