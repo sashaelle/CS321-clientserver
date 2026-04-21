@@ -14,10 +14,8 @@
 /* TO DO:
     * comment
     * use score function
-    * add in dealer hand
  */
 
-import java.io.DataOutputStream;
 import java.io.InputStreamReader;
 import java.net.*;
 import java.lang.String;
@@ -52,9 +50,11 @@ public class blackjackClient{
 
         //get rid of r when score funciton is implemented
         Random r = new Random();
-
+        int dealerScore;
+        int playerScore;
         //for getting input from user
         Scanner std_in = new Scanner(System.in);
+        String newCard;
 
         int option;//user option input
         boolean continueGame = true;//whether to start a new game or not
@@ -64,28 +64,29 @@ public class blackjackClient{
 
         System.out.println("Welcome to Blackjack");
         while(continueGame){
-            int playerScore = r.nextInt(25);
-            int dealerScore = r.nextInt(20);
             //asking server to deal a new hand
             output.write("Deal\n", 0, 5);
             output.flush();
-
+            dealerScore = r.nextInt(21);
+            playerScore = r.nextInt(21);
             //new player hand for the game
             ArrayList<String> playerHand = new ArrayList<String>();
             ArrayList<String> dealerHand = new ArrayList<String>();
             System.out.println("Waiting on intial 2 cards from server");
             //do NOT move out, need new memory address
-            addCard(playerHand, input);
-            addCard(playerHand, input);
+            newCard = input.readLine();
+            addCard(playerHand, newCard);
+            newCard = input.readLine();
+            addCard(playerHand, newCard);
 
-            addCard(dealerHand, input);
+            newCard = input.readLine();
+            addCard(dealerHand, newCard);
 
             //whether to hit or hold
             boolean hit = true;
             //continue while they want to hit
             //TO DO: compare to score
             while(hit == true & playerScore < 21){
-
                 //print out dealer hand
                 System.out.println("**********");
                 System.out.println("Dealer hand");
@@ -115,13 +116,19 @@ public class blackjackClient{
                         validInput = true;
                          //do NOT move out, need new memory address
                         System.out.println("Waiting on new card from server");
-                        addCard(playerHand, input);
+                        newCard = input.readLine();
+                        addCard(playerHand, newCard);
                     }
 
                     //if hold, end game
                     else if (option == 2){
                         output.write("Hold\n", 0, 5);
                         output.flush();
+                        newCard = input.readLine();
+                        while(newCard != "Done"){
+                            addCard(dealerHand, newCard);
+                            newCard = input.readLine();
+                        }
                         hit = false;
                         validInput = true;
                     }
@@ -214,21 +221,16 @@ public class blackjackClient{
     /****************************************************************************/
     /* Function name: addCard                                                   */
     /* Description: Adds to a hand from a given input                           */
-    /* Parameters: ArrayList<char[]> - hand: the hand to save the card to       */
-    /*              InputStreamReader input: the socket input                   */
+    /* Parameters: ArrayList<String> - hand: the hand to save the card to       */
+    /*              BufferedReader - input: the socket input                    */
     /* Return Value: void                                                       */
     /****************************************************************************/
-    public static void addCard(ArrayList<String> hand, BufferedReader input) throws Exception{
-
-            String inString;
-            inString = input.readLine();
-
-            int index = inString.indexOf(',');
+    public static void addCard(ArrayList<String> hand, String newCard) throws Exception{
+            int index = newCard.indexOf(',');
             if(index <= 0){
-                System.out.println("ERROR: " + inString);
+                System.out.println("ERROR: " + newCard);
                 return;
             }
-            System.out.println("new card: " + inString);
-            hand.add(inString);
+            hand.add(newCard);
     }
 }
