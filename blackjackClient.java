@@ -52,8 +52,6 @@ public class blackjackClient{
 
         //get rid of r when score funciton is implemented
         Random r = new Random();
-        int playerScore = r.nextInt(25);
-        int dealerScore = r.nextInt(20);
 
         //for getting input from user
         Scanner std_in = new Scanner(System.in);
@@ -66,13 +64,15 @@ public class blackjackClient{
 
         System.out.println("Welcome to Blackjack");
         while(continueGame){
+            int playerScore = r.nextInt(25);
+            int dealerScore = r.nextInt(20);
             //asking server to deal a new hand
             output.write("Deal\n", 0, 5);
             output.flush();
 
             //new player hand for the game
-            ArrayList<char[]> playerHand = new ArrayList<char[]>();
-            ArrayList<char[]> dealerHand = new ArrayList<char[]>();
+            ArrayList<String> playerHand = new ArrayList<String>();
+            ArrayList<String> dealerHand = new ArrayList<String>();
             System.out.println("Waiting on intial 2 cards from server");
             //do NOT move out, need new memory address
             addCard(playerHand, input);
@@ -86,19 +86,19 @@ public class blackjackClient{
             //TO DO: compare to score
             while(hit == true & playerScore < 21){
 
-                //print out user hand
-                System.out.println("**********");
-                System.out.println("Your hand");
-                for(char[] card : playerHand){
-                    System.out.println(cardTranslator(card));
-                }
-                System.out.println("**********");
-
                 //print out dealer hand
                 System.out.println("**********");
                 System.out.println("Dealer hand");
                 System.out.println("Hidden card");
                 System.out.println(cardTranslator(dealerHand.get(0)));
+                System.out.println("**********");
+
+                //print out user hand
+                System.out.println("**********");
+                System.out.println("Your hand");
+                for(String card : playerHand){
+                    System.out.println(cardTranslator(card));
+                }
                 System.out.println("**********");
 
                 //ask user to hit or hold
@@ -178,37 +178,38 @@ public class blackjackClient{
         input.close();
         System.out.println("Connected closed to " + IP + " at port " + Port);
     }
-    public static HashMap<Character, String> numberNames = new HashMap<>();
-    public static HashMap<Character, String> suiteNames = new HashMap<>();
+    public static HashMap<String, String> numberNames = new HashMap<>();
+    public static HashMap<String, String> suiteNames = new HashMap<>();
     public static void createHashMaps(){
 
-        suiteNames.put('H', "Hearts");
-        suiteNames.put('D', "Diamonds");
-        suiteNames.put('C', "Clubs");
-        suiteNames.put('S', "Spades");
+        suiteNames.put("H", "Hearts");
+        suiteNames.put("D", "Diamonds");
+        suiteNames.put("C", "Clubs");
+        suiteNames.put("S", "Spades");
 
 
-        numberNames.put('2', "2");
-        numberNames.put('3', "3");
-        numberNames.put('4', "4");
-        numberNames.put('5', "5");
-        numberNames.put('6', "6");
-        numberNames.put('7', "7");
-        numberNames.put('8', "8");
-        numberNames.put('9', "9");
-        numberNames.put('J', "Jack");
-        numberNames.put('Q', "Queen");
-        numberNames.put('K', "King");
-        numberNames.put('A', "Ace");
+        numberNames.put("2", "2");
+        numberNames.put("3", "3");
+        numberNames.put("4", "4");
+        numberNames.put("5", "5");
+        numberNames.put("6", "6");
+        numberNames.put("7", "7");
+        numberNames.put("8", "8");
+        numberNames.put("9", "9");
+        numberNames.put("10", "10");
+        numberNames.put("J", "Jack");
+        numberNames.put("Q", "Queen");
+        numberNames.put("K", "King");
+        numberNames.put("A", "Ace");
     }
     //this is translating the protocol names of the cards to the common human names
-    public static String cardTranslator(char[] cardName){
-        char suite = cardName[1];
-        char number = cardName[0];
+    public static String cardTranslator(String card){
+        String[] cardSplit = card.split(",");
+        String suite = cardSplit[1].stripLeading();
+        String number = cardSplit[0].stripLeading();
 
         String nameSuite = suiteNames.get(suite);
         String nameNumber = numberNames.get(number);
-
 
         return nameNumber + " of " + nameSuite;
     }
@@ -220,19 +221,17 @@ public class blackjackClient{
     /*              InputStreamReader input: the socket input                   */
     /* Return Value: void                                                       */
     /****************************************************************************/
-    public static void addCard(ArrayList<char[]> hand, BufferedReader input) throws Exception{
+    public static void addCard(ArrayList<String> hand, BufferedReader input) throws Exception{
 
             String inString;
             inString = input.readLine();
-            System.out.println("Input: " + inString);
 
             int index = inString.indexOf(',');
             if(index <= 0){
                 System.out.println("ERROR: " + inString);
                 return;
             }
-            //add card to hand
-            char[] card = {inString.charAt(index-1), inString.charAt(index+2)};
-            hand.add(card);
+            System.out.println("new card: " + inString);
+            hand.add(inString);
     }
 }
