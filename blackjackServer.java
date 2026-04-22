@@ -65,7 +65,10 @@ public class blackjackServer {
             inputLine = in.readLine();
             System.out.println(inputLine);
             
-            //int randomNum = 
+            // Initialize the blackjack game logic
+            libblackjack game = new libblackjack();
+            String deal1 = ""; String deal2 = ""; // initialize dealer's hand   
+
 
             // Keep connection alive
             while (inputLine != null) {
@@ -74,21 +77,15 @@ public class blackjackServer {
                 if (inputLine.equalsIgnoreCase("Deal")) {
                     setCards(); // initialize the deck of cards
                     // Player's initial hand
-                    int first = getRandomNum(); // get a random card
-                    out.println(cards.get(first)); 
-                    System.out.println("Player's initial hand: " + cards.get(first));
-                    cards.remove(first); // remove the card from the deck
-
-                    int second = getRandomNum(); // get another random card
-                    out.println(cards.get(second)); 
-                    System.out.println("Player's initial hand: " + cards.get(second));
-                    cards.remove(second); // remove the card from the deck
+                    int first = getRandomNum(); int second = getRandomNum(); // get initial hand of 2 random cards
+                    out.println(cards.get(first)); out.println(cards.get(second)); // send the cards to the client
+                    cards.remove(first); cards.remove(second); // remove the cards from the deck
 
                     // Dealer's initial hand
-                    int dealer = getRandomNum(); // get another random card for dealer 
-                    out.println(cards.get(dealer)); 
-                    System.out.println("Dealer's initial hand: " + cards.get(dealer));
-                    cards.remove(dealer); // remove the card from the deck
+                    int dealer1 = getRandomNum(); int dealer2 = getRandomNum(); // get another random card for dealer 
+                    out.println(cards.get(dealer1)); out.println(cards.get(dealer2));  // send dealer cards to the client
+                    deal1 = cards.get(dealer1); deal2 = cards.get(dealer2); // store the dealer's hand in variables
+                    cards.remove(dealer1); cards.remove(dealer2); // remove the cards from the deck
 
                     System.out.println("Deck size after dealing: " + cards.size());
                 } else if (inputLine.equalsIgnoreCase("Hit")) {
@@ -99,6 +96,16 @@ public class blackjackServer {
 
                     System.out.println("Deck size after hit: " + cards.size());
                 } else if (inputLine.equalsIgnoreCase("Hold")) {
+                    int dealer_hand = game.score(deal1 + deal2);
+                    System.out.println("Dealer's hand: " + deal1 + ", " + deal2 + " with score " + dealer_hand);
+                    while (dealer_hand < 17) {
+                        int curr = getRandomNum(); // get a random card
+                        out.println(cards.get(curr)); 
+                        System.out.println("Dealer's hit: " + cards.get(curr));
+                        dealer_hand = game.score(deal1 + deal2 + cards.get(curr)); // update the dealer's hand score
+                        System.out.println("Dealer's hand score after hit: " + dealer_hand);
+                        cards.remove(curr); // remove the card from the deck
+                    }
                 } else if (inputLine.equalsIgnoreCase("Exit")) {
                     out.println("Goodbye!");
                     break;
