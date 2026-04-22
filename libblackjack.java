@@ -1,7 +1,7 @@
 import java.util.HashMap;
 
 class libblackjack{
-    public int score(String hand) {
+    public static int score(String hand) {
         HashMap<String, Integer> scores = new HashMap<String, Integer>();
         scores.put("2", 2);
         scores.put("3", 3);

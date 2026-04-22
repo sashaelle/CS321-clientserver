@@ -79,6 +79,9 @@ public class blackjackClient{
             newCard = input.readLine();
             addCard(playerHand, newCard);
 
+            //getting the two dealer cards
+            newCard = input.readLine();
+            addCard(dealerHand, newCard);
             newCard = input.readLine();
             addCard(dealerHand, newCard);
 
@@ -86,12 +89,15 @@ public class blackjackClient{
             boolean hit = true;
             //continue while they want to hit
             //TO DO: compare to score
+            
+            playerScore = libblackjack.score(convertHand(playerHand));
             while(hit == true & playerScore < 21){
                 //print out dealer hand
                 System.out.println("**********");
                 System.out.println("Dealer hand");
                 System.out.println("Hidden card");
-                System.out.println(cardTranslator(dealerHand.get(0)));
+                //only printing out the second card since the first is hidden
+                System.out.println(cardTranslator(dealerHand.get(1)));
                 System.out.println("**********");
 
                 //print out user hand
@@ -100,6 +106,7 @@ public class blackjackClient{
                 for(String card : playerHand){
                     System.out.println(cardTranslator(card));
                 }
+                System.out.println("Score: " + playerScore);
                 System.out.println("**********");
 
                 //ask user to hit or hold
@@ -112,25 +119,35 @@ public class blackjackClient{
                     if (option == 1){
                         output.write("Hit\n", 0, 4);
                         output.flush();
-                        hit = true;
-                        validInput = true;
-                         //do NOT move out, need new memory address
-                        System.out.println("Waiting on new card from server");
+                        hit = true;//this is the for the game
+                        validInput = true;//this is to get valid input
+
+                        //getting a new card and calculating the new score
                         newCard = input.readLine();
                         addCard(playerHand, newCard);
+                        playerScore = libblackjack.score(convertHand(playerHand));
                     }
 
                     //if hold, end game
                     else if (option == 2){
                         output.write("Hold\n", 0, 5);
                         output.flush();
+
+                        //printing out the current dealer hand
+                        System.out.println("Dealer hand: ");
+                        System.out.println(cardTranslator(dealerHand.get(0)));
+                        System.out.println(cardTranslator(dealerHand.get(1)));
+
                         newCard = input.readLine();
                         while(newCard != "Done"){
                             addCard(dealerHand, newCard);
                             newCard = input.readLine();
+                            System.out.println(cardTranslator(newCard));
                         }
-                        hit = false;
-                        validInput = true;
+                        dealerScore = libblackjack.score(convertHand(dealerHand));
+                
+                        hit = false;//indicates that the game is done
+                        validInput = true;//indicates that the input was valid
                     }
                     else{
                         System.out.println("Invalid Choice.");
@@ -232,5 +249,16 @@ public class blackjackClient{
                 return;
             }
             hand.add(newCard);
+    }
+
+    public static String convertHand(ArrayList<String> hand){
+        String stringHand = "";
+
+        for(String card : hand){
+            String[] num = card.split(",");
+            stringHand = stringHand.concat(num[0] + ",");
+        }
+        System.out.println("^^^^" + stringHand.substring(0, stringHand.length()-1));
+        return stringHand.substring(0, stringHand.length()-1);
     }
 }
