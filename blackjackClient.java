@@ -138,11 +138,17 @@ public class blackjackClient{
                         System.out.println(cardTranslator(dealerHand.get(0)));
                         System.out.println(cardTranslator(dealerHand.get(1)));
 
-                        newCard = input.readLine();
-                        while(newCard != "Done"){
-                            addCard(dealerHand, newCard);
+
+                        while(dealerScore < 17){
                             newCard = input.readLine();
+                            System.out.println("new card: *" + newCard + "*");
+                            if(newCard == null){
+                                System.out.println("No card given");
+                            }
+                            addCard(dealerHand, newCard);
                             System.out.println(cardTranslator(newCard));
+                            dealerScore = libblackjack.score(convertHand(dealerHand));
+                            
                         }
                         dealerScore = libblackjack.score(convertHand(dealerHand));
                 

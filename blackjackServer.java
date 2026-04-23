@@ -98,13 +98,19 @@ public class blackjackServer {
 
                     System.out.println("Deck size after hit: " + cards.size());
                 } else if (inputLine.equalsIgnoreCase("Hold")) {
-                    int dealer_hand = game.score(deal1 + deal2);
+                    
+                    int dealer_hand = libblackjack.score(deal1.substring(0, deal1.indexOf(',')) + ","
+                    + deal2.substring(0, deal2.indexOf(',')) + ",");
                     System.out.println("Dealer's hand: " + deal1 + ", " + deal2 + " with score " + dealer_hand);
                     while (dealer_hand < 17) {
                         int curr = getRandomNum(); // get a random card
                         out.println(cards.get(curr)); 
                         System.out.println("Dealer's hit: " + cards.get(curr));
-                        dealer_hand = game.score(deal1 + deal2 + cards.get(curr)); // update the dealer's hand score
+                        String dealerNewCard = cards.get(curr);
+                        
+                        dealer_hand = libblackjack.score(deal1.substring(0, deal1.indexOf(',')) + ","
+                         + deal2.substring(0, deal2.indexOf(',')) + ","
+                         + dealerNewCard.substring(0, dealerNewCard.indexOf(','))); // update the dealer's hand score
                         System.out.println("Dealer's hand score after hit: " + dealer_hand);
                         cards.remove(curr); // remove the card from the deck
                     }
@@ -145,7 +151,7 @@ public class blackjackServer {
         } // end function setCards
 
         int getRandomNum(){
-            return (int)(Math.random() * (cards.size()));
+            return (int)(Math.random() * (cards.size()) + 1);
         } // end function getRandomNum
     }  // end class Handler
 }
