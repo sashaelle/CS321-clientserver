@@ -1,5 +1,5 @@
 /***********************************************************/
-/* Author: Joy Janney                                      */
+/* Author: Joy Janney, [Sasha Crawford]                    */
 /* Major: Computer Science                                 */
 /* Creation Date: March 25th, 2026                         */
 /* Due Date: April 2nd, 2026                               */
