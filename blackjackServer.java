@@ -2,7 +2,7 @@
 /* Author: Sasha Crawford, [Joy Janney], [Youssef Ahmed] */
 /* Major: Computer Science                               */
 /* Creation Date: 03/24/2026                             */
-/* Due Date: 04/02/2026                                  */
+/* Due Date: 04/24/2026                                  */
 /* Course: CS-321 Communication and Networking           */
 /* Professor Name: Professor Evan Shimkanon              */
 /* Assignment: Client-Server Final Project               */
@@ -11,6 +11,7 @@
 /*********************************************************/
 
 import java.io.*;
+import java.lang.reflect.Array;
 import java.net.*;  
 import java.util.*; 
 
@@ -56,19 +57,10 @@ public class blackjackServer {
             out = new PrintWriter(socket.getOutputStream(), true);
             in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 
-            /*
-            // Send greeting when client connects
-            out.println("Hello!");
-            System.out.println("Hello from Server!");
-            */
-
             inputLine = in.readLine();
             System.out.println(inputLine);
             
-            // Initialize the blackjack game logic
-            String deal1 = ""; String deal2 = ""; // initialize dealer's hand   
-
-
+            ArrayList<String> dealerHand = new ArrayList<>(); // initialize player's hand
             // Keep connection alive
             while (inputLine != null) {
                 System.out.println("Client says: " + inputLine);
@@ -76,52 +68,35 @@ public class blackjackServer {
                 if (inputLine.equalsIgnoreCase("Deal")) {
                     setCards(); // initialize the deck of cards
                     // Player's initial hand
-                    int first = getRandomNum(); 
-                    out.println(cards.get(first)); 
-                    System.out.println("Player 1st: " + cards.get(first));
+                    int first = getRandomNum(); out.println(cards.get(first)); 
                     cards.remove(first);
                     
-                    int second = getRandomNum();
-                    out.println(cards.get(second)); 
-                    System.out.println("Player 2nd: " + cards.get(second));
+                    int second = getRandomNum(); out.println(cards.get(second)); 
                     cards.remove(second);
 
                     // Dealer's initial hand
                     int dealer1 = getRandomNum(); 
-                    deal1 = cards.get(dealer1); 
-                    out.println(cards.get(dealer1));
-                    System.out.println("Dealer 1st: " + cards.get(dealer1));
+                    dealerHand.add(cards.get(dealer1)); out.println(dealerHand.get(0)); // store the dealer's hand in variables
                     cards.remove(dealer1);
 
                     int dealer2 = getRandomNum(); 
-                    deal2 = cards.get(dealer2);  // store the dealer's hand in variables
-                    out.println(cards.get(dealer2));  
-                    System.out.println("Dealer 2nd: " + cards.get(dealer2));
+                    dealerHand.add(cards.get(dealer2)); out.println(dealerHand.get(1)); // store the dealer's hand in variables  
                     cards.remove(dealer2);
-
-                    System.out.println("Deck size after dealing: " + cards.size());
                 } else if (inputLine.equalsIgnoreCase("Hit")) {
-                    int curr = getRandomNum(); // get a random card
-                    out.println(cards.get(curr)); 
-                    System.out.println("Player's hit: " + cards.get(curr));
+                    int curr = getRandomNum(); out.println(cards.get(curr)); // get a random card
                     cards.remove(curr); // remove the card from the deck
-
-                    System.out.println("Deck size after hit: " + cards.size());
                 } else if (inputLine.equalsIgnoreCase("Hold")) {
-                    
                     int dealer_hand = libblackjack.score(deal1.substring(0, deal1.indexOf(',')) + ","
                     + deal2.substring(0, deal2.indexOf(',')) + ",");
                     System.out.println("Dealer's hand: " + deal1 + ", " + deal2 + " with score " + dealer_hand);
                     while (dealer_hand < 17) {
                         int curr = getRandomNum(); // get a random card
                         out.println(cards.get(curr)); 
-                        System.out.println("Dealer's hit: " + cards.get(curr));
                         String dealerNewCard = cards.get(curr);
                         
                         dealer_hand = libblackjack.score(deal1.substring(0, deal1.indexOf(',')) + ","
                          + deal2.substring(0, deal2.indexOf(',')) + ","
                          + dealerNewCard.substring(0, dealerNewCard.indexOf(','))); // update the dealer's hand score
-                        System.out.println("Dealer's hand score after hit: " + dealer_hand);
                         cards.remove(curr); // remove the card from the deck
                     }
                 } else if (inputLine.equalsIgnoreCase("Exit")) {
