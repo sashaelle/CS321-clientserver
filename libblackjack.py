@@ -22,10 +22,10 @@ def score(hand):
             num_aces += 1;
         else:
             score += scores[card]
-    
-    num_aces_11 = (int)((21-score)/11)
-    num_aces_1 = num_aces - num_aces_11
+        
+        num_aces_11 = (int)((21-score)/11)
+        num_aces_1 = num_aces - num_aces_11
 
-    score += num_aces_1 + num_aces_11*11
+        score += num_aces_1 + num_aces_11*11
 
     return score

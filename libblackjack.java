@@ -28,10 +28,12 @@ class libblackjack{
             }
         }
         
-        int num_aces_11 = (int)((21-score)/11);
-        int num_aces_1 = num_aces - num_aces_11;
-
-        score += num_aces_1 + num_aces_11*11;
+        if (((num_aces - 1 + 11 + score) < 21) & (num_aces > 0)){
+            score += num_aces - 1 + 11;
+        }
+        else{
+            score += num_aces;
+        }
 
         return score;
     }

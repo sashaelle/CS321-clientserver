@@ -79,12 +79,14 @@ public class blackjackServer {
                     // Player's initial hand
                     int first = getRandomNum(); int second = getRandomNum(); // get initial hand of 2 random cards
                     out.println(cards.get(first)); out.println(cards.get(second)); // send the cards to the client
+                    System.out.println("Player hand: " + cards.get(first) + cards.get(second));
                     cards.remove(first); cards.remove(second); // remove the cards from the deck
 
                     // Dealer's initial hand
                     int dealer1 = getRandomNum(); int dealer2 = getRandomNum(); // get another random card for dealer 
                     out.println(cards.get(dealer1)); out.println(cards.get(dealer2));  // send dealer cards to the client
                     deal1 = cards.get(dealer1); deal2 = cards.get(dealer2); // store the dealer's hand in variables
+                    System.out.println("Dealer hand: " + cards.get(dealer1) + cards.get(dealer2));
                     cards.remove(dealer1); cards.remove(dealer2); // remove the cards from the deck
 
                     System.out.println("Deck size after dealing: " + cards.size());
@@ -143,7 +145,7 @@ public class blackjackServer {
         } // end function setCards
 
         int getRandomNum(){
-            return (int)(Math.random() * (cards.size() + 1));
+            return (int)(Math.random() * (cards.size()));
         } // end function getRandomNum
     }  // end class Handler
 }
