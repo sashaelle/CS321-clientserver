@@ -8,10 +8,9 @@
 /* Assignment: Client-Server Final Project               */
 /* Filename: blackjackServer.java                        */
 /* Purpose: Blackjack server implementation              */
-/*********************************************************/
+/********************************1*************************/
 
 import java.io.*;
-import java.lang.reflect.Array;
 import java.net.*;  
 import java.util.*; 
 
@@ -86,18 +85,12 @@ public class blackjackServer {
                     int curr = getRandomNum(); out.println(cards.get(curr)); // get a random card
                     cards.remove(curr); // remove the card from the deck
                 } else if (inputLine.equalsIgnoreCase("Hold")) {
-                    int dealer_hand = libblackjack.score(deal1.substring(0, deal1.indexOf(',')) + ","
-                    + deal2.substring(0, deal2.indexOf(',')) + ",");
-                    System.out.println("Dealer's hand: " + deal1 + ", " + deal2 + " with score " + dealer_hand);
-                    while (dealer_hand < 17) {
-                        int curr = getRandomNum(); // get a random card
-                        out.println(cards.get(curr)); 
-                        String dealerNewCard = cards.get(curr);
-                        
-                        dealer_hand = libblackjack.score(deal1.substring(0, deal1.indexOf(',')) + ","
-                         + deal2.substring(0, deal2.indexOf(',')) + ","
-                         + dealerNewCard.substring(0, dealerNewCard.indexOf(','))); // update the dealer's hand score
+                    int dealerScore = libblackjack.score(libblackjack.convertHand(dealerHand)); // get the dealer's score
+                    while (dealerScore < 17) { // dealer must hit until they have at least  17 points
+                        int curr = getRandomNum(); 
+                        dealerHand.add(cards.get(curr)); out.println(cards.get(curr)); // get a random card and add it to the dealer's hand
                         cards.remove(curr); // remove the card from the deck
+                        dealerScore = libblackjack.score(libblackjack.convertHand(dealerHand)); // update the dealer's score
                     }
                 } else if (inputLine.equalsIgnoreCase("Exit")) {
                     out.println("Goodbye!");
