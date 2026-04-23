@@ -76,17 +76,28 @@ public class blackjackServer {
                 if (inputLine.equalsIgnoreCase("Deal")) {
                     setCards(); // initialize the deck of cards
                     // Player's initial hand
-                    int first = getRandomNum(); int second = getRandomNum(); // get initial hand of 2 random cards
-                    out.println(cards.get(first)); out.println(cards.get(second)); // send the cards to the client
-                    System.out.println("Player hand: " + cards.get(first) + cards.get(second));
-                    cards.remove(first); cards.remove(second); // remove the cards from the deck
+                    int first = getRandomNum(); 
+                    out.println(cards.get(first)); 
+                    System.out.println("Player 1st: " + cards.get(first));
+                    cards.remove(first);
+                    
+                    int second = getRandomNum();
+                    out.println(cards.get(second)); 
+                    System.out.println("Player 2nd: " + cards.get(second));
+                    cards.remove(second);
 
                     // Dealer's initial hand
-                    int dealer1 = getRandomNum(); int dealer2 = getRandomNum(); // get another random card for dealer 
-                    out.println(cards.get(dealer1)); out.println(cards.get(dealer2));  // send dealer cards to the client
-                    deal1 = cards.get(dealer1); deal2 = cards.get(dealer2); // store the dealer's hand in variables
-                    System.out.println("Dealer hand: " + cards.get(dealer1) + cards.get(dealer2));
-                    cards.remove(dealer1); cards.remove(dealer2); // remove the cards from the deck
+                    int dealer1 = getRandomNum(); 
+                    deal1 = cards.get(dealer1); 
+                    out.println(cards.get(dealer1));
+                    System.out.println("Dealer 1st: " + cards.get(dealer1));
+                    cards.remove(dealer1);
+
+                    int dealer2 = getRandomNum(); 
+                    deal2 = cards.get(dealer2);  // store the dealer's hand in variables
+                    out.println(cards.get(dealer2));  
+                    System.out.println("Dealer 2nd: " + cards.get(dealer2));
+                    cards.remove(dealer2);
 
                     System.out.println("Deck size after dealing: " + cards.size());
                 } else if (inputLine.equalsIgnoreCase("Hit")) {
@@ -135,22 +146,22 @@ public class blackjackServer {
         } // end function run
 
         // HashMap to represent the deck of cards
-        public static HashMap<Integer, String> cards = new HashMap<>();
         private static String[] suits = {"H", "D", "C", "S"};
         private static String[] numbers = {"2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K", "A"};
 
-        public static void setCards(){
-            int id = 0;
+        public static ArrayList<String> cards = new ArrayList<>();
+
+        public static void setCards() {
+            cards.clear();
             for (String suit : suits) {
                 for (String number : numbers) {
-                    cards.put(id, number+", "+suit);
-                    id++;
+                    cards.add(number + ", " + suit);
                 }
             }
-        } // end function setCards
+        }
 
-        int getRandomNum(){
-            return (int)(Math.random() * (cards.size()) + 1);
-        } // end function getRandomNum
+        int getRandomNum() {
+            return (int)(Math.random() * cards.size());
+        }// end function getRandomNum
     }  // end class Handler
 }
