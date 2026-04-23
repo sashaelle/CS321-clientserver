@@ -43,7 +43,7 @@ public class blackjackServer {
     private Socket socket;   // socket to use to connect to clients
     private PrintWriter out;
     private BufferedReader in;
-    private String inputLine, outputLine;
+    private String inputLine;
 
     // Construct a handler thread
     public Handler(Socket socket) {
@@ -66,7 +66,6 @@ public class blackjackServer {
             System.out.println(inputLine);
             
             // Initialize the blackjack game logic
-            libblackjack game = new libblackjack();
             String deal1 = ""; String deal2 = ""; // initialize dealer's hand   
 
 
