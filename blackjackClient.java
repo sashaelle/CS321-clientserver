@@ -291,12 +291,12 @@ public class blackjackClient{
     /* Return Value: void                                                       */
     /****************************************************************************/
     public static void addCard(ArrayList<String> hand, String newCard) throws Exception{
-            int index = newCard.indexOf(',');
-            if(index <= 0){
-                System.out.println("ERROR: " + newCard);
-                return;
-            }
-            hand.add(newCard);
+        //check if the suite and number were given by searching for the comma
+        int index = newCard.indexOf(',');
+        if(index <= 0){
+            System.out.println("ERROR: " + newCard);
+            return;
+        }
+        hand.add(newCard);
     }
-
 }
