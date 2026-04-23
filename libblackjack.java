@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.HashMap;
 
 class libblackjack{
@@ -36,5 +37,15 @@ class libblackjack{
         }
 
         return score;
+    }
+
+    public static String convertHand(ArrayList<String> hand){
+        String stringHand = "";
+
+        for(String card : hand){
+            String[] num = card.split(",");
+            stringHand = stringHand.concat(num[0] + ",");
+        }
+        return stringHand.substring(0, stringHand.length()-1);
     }
 }
