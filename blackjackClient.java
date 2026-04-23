@@ -7,13 +7,15 @@
 /* Professor Name: Professor Shimkanon                     */
 /* Assignment: Final Project Phase #2                      */
 /* Filename: blackjackClient.java                          */
-/* Purpose: This program connects to a blackjack server,   */
-/*   says hello, disconnects, and says goodbye.            */
+/* Purpose: The server is meant to deal with user input    */
+/*          for the blackjack game. Primary                */
+/*          responsiblities are hit and hold for user and  */
+/*          communicating that with the server to recieve  */
+/*          the proper cards.                              */
 /***********************************************************/
 
 /* TO DO:
     * comment
-    * use score function
  */
 
 import java.io.InputStreamReader;
@@ -59,21 +61,27 @@ public class blackjackClient{
         int option;//user option input
         boolean continueGame = true;//whether to start a new game or not
 
-        //should have functions moved to library later
+        //creating the card hashmaps for the user to know what card
+        //we are not sending full card name which will be confusing for the user
         createHashMaps();
 
+        //starting a blackjack gam
         System.out.println("Welcome to Blackjack");
         while(continueGame){
+
             //asking server to deal a new hand
             output.write("Deal\n", 0, 5);
             output.flush();
             dealerScore = r.nextInt(21);
             playerScore = r.nextInt(21);
-            //new player hand for the game
+
+            //new player and dealer hand for the game
+            //new a new memory address each time
             ArrayList<String> playerHand = new ArrayList<String>();
             ArrayList<String> dealerHand = new ArrayList<String>();
-            System.out.println("Waiting on intial 2 cards from server");
+
             //do NOT move out, need new memory address
+            //reading in the first two player cards
             newCard = input.readLine();
             addCard(playerHand, newCard);
             newCard = input.readLine();
@@ -85,13 +93,13 @@ public class blackjackClient{
             newCard = input.readLine();
             addCard(dealerHand, newCard);
 
-            //whether to hit or hold
+            //if the user wants to hit or hold
             boolean hit = true;
-            //continue while they want to hit
-            //TO DO: compare to score
             
-            playerScore = libblackjack.score(convertHand(playerHand));
+            //converting the hand into a numeric only for the scoring function and scoring
+            playerScore = libblackjack.score(libblackjack.convertHand(playerHand));
             while(hit == true & playerScore < 21){
+
                 //print out dealer hand
                 System.out.println("**********");
                 System.out.println("Dealer hand");
@@ -111,25 +119,34 @@ public class blackjackClient{
 
                 //ask user to hit or hold
                 boolean validInput = false;
+                //while they input invalid options reprint options and ask for input
                 while(!validInput){
+
+                    //display options of hit or hold to user
                     System.out.println("(1) Hit\n(2) Hold");
+                    //get the user selection
                     option = std_in.nextInt();
 
                     //if hit, ask server for new card
                     if (option == 1){
+                        //communicate hit for server
                         output.write("Hit\n", 0, 4);
                         output.flush();
+
                         hit = true;//this is the for the game
                         validInput = true;//this is to get valid input
 
                         //getting a new card and calculating the new score
                         newCard = input.readLine();
                         addCard(playerHand, newCard);
-                        playerScore = libblackjack.score(convertHand(playerHand));
+
+                        //score hand
+                        playerScore = libblackjack.score(libblackjack.convertHand(playerHand));
                     }
 
                     //if hold, end game
                     else if (option == 2){
+                        //communicate hold to server
                         output.write("Hold\n", 0, 5);
                         output.flush();
 
@@ -138,31 +155,40 @@ public class blackjackClient{
                         System.out.println(cardTranslator(dealerHand.get(0)));
                         System.out.println(cardTranslator(dealerHand.get(1)));
 
-
+                        //getting the dealer hand as it is dealed
+                        //dealer picks up whilescore is 16 or les
                         while(dealerScore < 17){
+                            //reading in card
                             newCard = input.readLine();
-                            System.out.println("new card: *" + newCard + "*");
                             if(newCard == null){
                                 System.out.println("No card given");
                             }
+
+                            //adding card to hand and printing to user
                             addCard(dealerHand, newCard);
                             System.out.println(cardTranslator(newCard));
-                            dealerScore = libblackjack.score(convertHand(dealerHand));
+
+                            //updating to the scoring feature
+                            dealerScore = libblackjack.score(libblackjack.convertHand(dealerHand));
                             
                         }
-                        dealerScore = libblackjack.score(convertHand(dealerHand));
+                        //score the hand just to make sure it is updated
+                        dealerScore = libblackjack.score(libblackjack.convertHand(dealerHand));
                 
                         hit = false;//indicates that the game is done
                         validInput = true;//indicates that the input was valid
                     }
                     else{
+                        //tell user they had invalid input
                         System.out.println("Invalid Choice.");
                         validInput = false;
                     }
                 }
                 //TO DO: calculate score of the hand
             }
-            //TO DO: call score function to determine winner
+
+            //determining the winner
+            //higher number not over 21
             if(playerScore > 21){
                 System.out.println("Bust!");
             }
@@ -172,33 +198,39 @@ public class blackjackClient{
             else{
                 System.out.println("You lost!");
             }
+
+            //print out scores of both hands
             System.out.println("Dealer hand score: " + dealerScore);
             System.out.println("Your hand score: " + playerScore);
 
             //ask user if they want to start a new game
             boolean validInput = false;
             while(!validInput){
+                //ask user for input and get it
                 System.out.println("(1) New Game\n(2) Exit");
-
                 option = std_in.nextInt();
+
+                //newgame
                 if (option == 1){
                     continueGame = true;
                     validInput = true;
-                    //output.print("Deal");
                     
                 }
+                //exit game
                 else if (option == 2){
                     continueGame = false;
                     validInput = true;
                     output.write("Exit", 0, 4);
                     output.flush();
                 }
+                //invalid input
                 else{
                     System.out.println("Invalid Choice.");
                     validInput = false;
                 }
             }
-        }   
+        }  
+        //close all connections 
         s.close();
         std_in.close();
         output.close();
@@ -229,12 +261,22 @@ public class blackjackClient{
         numberNames.put("K", "King");
         numberNames.put("A", "Ace");
     }
-    //this is translating the protocol names of the cards to the common human names
+    /****************************************************************************/
+    /* Function name: cardTranslator                                            */
+    /* Description: Takes a card from the <number>, <suite> formate and outputs */
+    /*              it into a user friendly version                             */
+    /* Parameters: String - card: the card of <number>, <suite> format          */
+    /* Return Value: String - user friendly version of the card                 */
+    /****************************************************************************/
     public static String cardTranslator(String card){
+        //splitting on where the comma is since 10 is two chars but 1 is one char
         String[] cardSplit = card.split(",");
+
+        //assigning the suite and number
         String suite = cardSplit[1].stripLeading();
         String number = cardSplit[0].stripLeading();
 
+        //getting the 
         String nameSuite = suiteNames.get(suite);
         String nameNumber = numberNames.get(number);
 
@@ -257,13 +299,4 @@ public class blackjackClient{
             hand.add(newCard);
     }
 
-    public static String convertHand(ArrayList<String> hand){
-        String stringHand = "";
-
-        for(String card : hand){
-            String[] num = card.split(",");
-            stringHand = stringHand.concat(num[0] + ",");
-        }
-        return stringHand.substring(0, stringHand.length()-1);
-    }
 }

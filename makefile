@@ -3,10 +3,18 @@ JC = javac
 
 
 client: client.class
+	java blackjackClient localhost 1706
 client.class:
-	java blackjackClient.java localhost 1706
+	javac blackjackClient.java
 
 
 server: server.class
+	java blackjackServer 1706
 server.class:
-	java blackjackServer.java 1706
+	javac blackjackServer.java
+
+library: server.class
+	javac libblackjack.java
+
+clean:
+	rm -f *.class
