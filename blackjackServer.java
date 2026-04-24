@@ -65,6 +65,7 @@ public class blackjackServer {
                 System.out.println("Client says: " + inputLine);
 
                 if (inputLine.equalsIgnoreCase("Deal")) {
+                    dealerHand = new ArrayList<>(); // reinitialize player's hand to wipe it clean
                     setCards(); // initialize the deck of cards
                     // Player's initial hand
                     int first = getRandomNum(); out.println(cards.get(first)); 
