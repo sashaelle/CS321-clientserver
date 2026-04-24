@@ -5,10 +5,12 @@ Blackjack is a common card game. The game uses a standard deck of 52 cards and i
 ## Executing
 ### Server
 Compile: javac blackjackServer.java
+
 Run: java blackjackServer 1706 
 
 ### Client
 Compile: javac blackjackClient.java
+
 Run: java blackjackClient 127.0.0.1 1706
 
 ### Library
