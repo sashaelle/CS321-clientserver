@@ -72,8 +72,6 @@ public class blackjackClient{
             //asking server to deal a new hand
             output.write("Deal\n", 0, 5);
             output.flush();
-            dealerScore = r.nextInt(21);
-            playerScore = r.nextInt(21);
 
             //new player and dealer hand for the game
             //new a new memory address each time
@@ -95,6 +93,12 @@ public class blackjackClient{
 
             //if the user wants to hit or hold
             boolean hit = true;
+            //if the dealer draws a natural 21 the dealer automatically wins
+            dealerScore = libblackjack.score(libblackjack.convertHand(dealerHand));
+            if(dealerScore == 21){
+                hit = false;
+            }
+
             
             //converting the hand into a numeric only for the scoring function and scoring
             playerScore = libblackjack.score(libblackjack.convertHand(playerHand));

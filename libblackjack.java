@@ -56,7 +56,7 @@ class libblackjack{
         
         //at max one ace at value 11 can be added
         //if are other aces, check if all the values push it over 21
-        if (((num_aces - 1 + 11 + score) < 21) & (num_aces > 0)){
+        if (((num_aces - 1 + 11 + score) <= 21) & (num_aces > 0)){
             score += num_aces - 1 + 11;
         }
         //add all the aces in as one
