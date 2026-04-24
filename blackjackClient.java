@@ -193,6 +193,9 @@ public class blackjackClient{
             if(playerScore > 21){
                 System.out.println("Bust!");
             }
+            else if(playerScore ==21 & dealerScore ==21){
+                System.out.println("Draw...");
+            }
             else if((playerScore > dealerScore) | (dealerScore > 21)){
                 System.out.println("Congrats you won!");
             }
