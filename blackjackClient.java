@@ -51,7 +51,6 @@ public class blackjackClient{
         BufferedReader input = new BufferedReader(new InputStreamReader(s.getInputStream(), "UTF8"));
 
         //get rid of r when score funciton is implemented
-        Random r = new Random();
         int dealerScore;
         int playerScore;
         //for getting input from user
