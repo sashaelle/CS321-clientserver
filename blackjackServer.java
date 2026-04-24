@@ -91,6 +91,7 @@ public class blackjackServer {
                 /***************************************************************************/
 
                 if (inputLine.equalsIgnoreCase("Deal")) {
+                    dealerHand = new ArrayList<>(); // reinitialize player's hand to wipe it clean
                     setCards(); // initialize the deck of cards
 
                     // Player's initial hand

@@ -157,6 +157,7 @@ public class blackjackClient{
 
                         //getting the dealer hand as it is dealed
                         //dealer picks up whilescore is 16 or les
+                        dealerScore = libblackjack.score(libblackjack.convertHand(dealerHand));
                         while(dealerScore < 17){
                             //reading in card
                             newCard = input.readLine();
@@ -192,7 +193,7 @@ public class blackjackClient{
             if(playerScore > 21){
                 System.out.println("Bust!");
             }
-            else if(playerScore > dealerScore){
+            else if((playerScore > dealerScore) | (dealerScore > 21)){
                 System.out.println("Congrats you won!");
             }
             else{
